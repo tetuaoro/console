@@ -1,0 +1,39 @@
+header {
+  transition: padding 0.3s ease 0.3s;
+}
+
+.nav-link {
+  transition: padding 0.3s ease 0.3s;
+}
+
+.link-content-text {
+  opacity: 0;
+  width: 0;
+  transition: opacity 0.2s ease, width 0.3s ease 0.3s;
+}
+
+.link-content-icon {
+  transition: transform 0.3s 0.3s;
+}
+
+header:hover {
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
+
+header:hover .nav-link {
+  transition: padding 0.3s ease 0.3s;
+  padding-right: 1rem !important;
+  padding-left: 1rem !important;
+}
+
+header:hover .link-content-icon {
+  transition: transform 0.3s 0.3s;
+  transform: rotate(45deg);
+}
+
+header:hover .link-content-text {
+  transition: opacity 0.3s ease 0.6s, width 0.3s ease 0.3s;
+  width: 60px;
+  opacity: 1;
+}
