@@ -6,9 +6,9 @@ import { Nav } from "react-bootstrap"
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div className="d-flex align-items-stretch bg-primary">
-      <header className="pt-3 pt-sm-5 align-self-start sticky-top vh-100">
-        <Nav as="ul" defaultActiveKey="/" className="flex-column">
+    <div className="d-flex flex-column flex-sm-row align-items-sm-stretch bg-primary">
+      <header className="py-3 pb-sm-0 pt-sm-5 align-self-sm-start sticky-sm-top">
+        <Nav as="ul" defaultActiveKey="/" className="flex-sm-column">
           <Nav.Item as="li" className="mt-3">
             <Link href="/">
               <Nav.Link className="d-flex text-white px-2" href="/">
