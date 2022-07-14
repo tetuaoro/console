@@ -1,6 +1,6 @@
 {
-  "name": "console",
-  "version": "0.2.0",
+  "name": "raoweb-console",
+  "version": "0.2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,12 +1,12 @@
 import { Document, Page, Text, Link, StyleSheet } from "@react-pdf/renderer"
 
 export interface ContratProps {
+  clientName: string
+  subClientName: string
   header?: string
   title?: string
   author?: string
   proName?: string
-  clientName: string
-  subClientName: string
   domainName?: string
   hosting?: { name: string; link?: string }
   contract?: {
@@ -20,7 +20,6 @@ export interface ContratProps {
 // https://business.lesechos.fr/outils-et-services/modeles-de-documents/modeles-commercial/10014720-contrat-de-conception-d-un-site-web-55562.php
 const Contrat: React.FC<ContratProps> = (props) => {
   const author = props.author || "Rao Web"
-
   return (
     <Document language="fr">
       <Page style={styles.body}>
@@ -29,7 +28,6 @@ const Contrat: React.FC<ContratProps> = (props) => {
         </Text>
         <Text style={styles.title}>{props.title || "CONTRAT DE CONCEPTION D'UN SITE WEB"}</Text>
         <Text style={styles.author}>{author}</Text>
-        {/* <Image style={styles.image} src="/images/couverture.png" /> */}
         <Text style={styles.text}>
           <Text style={styles.bold}>{"Entre "}</Text>
           <Text style={styles.highLight}>{`${props.clientName}`}</Text>
@@ -53,12 +51,20 @@ const Contrat: React.FC<ContratProps> = (props) => {
         <Text style={styles.article}>{"Article 2 - Objet 2.1 Services"}</Text>
         <Text style={styles.paragraph}>{"Le Concepteur s'engage envers le Client à fournir les services suivants (ci-après appelés « les services ») :"}</Text>
         <Text style={styles.paragraph}>
+          {"a) enregistrer au nom du Client le nom de domaine indiqué dans les spécifications qui se trouvent en annexe « "}
+          <Link src="#domainName" style={styles.link}>
+            {"nom de domaine"}
+          </Link>
           {
-            "a) enregistrer au nom du Client le nom de domaine indiqué dans les spécifications qui se trouvent en annexe « nom de domaine » du présent contrat (ci-après appelées « les spécifications ») ou, en cas de non-disponibilité, tout autre nom de domaine enregistrable proposé par le Client, auprès de l'organisme responsable, relativement au site Web du Client (ci-après appelé « le site Web ») ;"
+            " » du présent contrat (ci-après appelées « les spécifications ») ou, en cas de non-disponibilité, tout autre nom de domaine enregistrable proposé par le Client, auprès de l'organisme responsable, relativement au site Web du Client (ci-après appelé « le site Web ») ;"
           }
         </Text>
         <Text style={styles.paragraph}>
-          {"b) concevoir et développer le site Web du Client en fonction des spécifications qui figurent en annexe « SPÉCIFICATIONS » du présent contrat, y compris, de façon non limitative :"}
+          {"b) concevoir et développer le site Web du Client en fonction des spécifications qui figurent en annexe « "}
+          <Link src="#spec" style={styles.link}>
+            {"SPÉCIFICATIONS"}
+          </Link>
+          {" » du présent contrat, y compris, de façon non limitative :"}
         </Text>
         <Text style={styles.list}>{"- la conception de l'architecture d'information et de l'organisation du site Web, en plus de la navigation de celui-ci ;"}</Text>
         <Text style={styles.list}>
@@ -78,12 +84,18 @@ const Contrat: React.FC<ContratProps> = (props) => {
           }
         </Text>
         <Text style={styles.paragraph}>{"c) procéder aux tests de fonctionnement du site Web ;"}</Text>
-        <Text style={styles.paragraph}>{"d) installer le site Web sur le serveur Web indiqué dans les spécifications « hébergement » ;"}</Text>
-        <Text style={styles.paragraph}>{"e) fournir au Client l'information et la documentation relative au site Web (sans leurs codes sources) ;"}</Text>
+        <Text style={styles.paragraph}>
+          {"d) installer le site Web sur le serveur Web indiqué dans les spécifications « "}
+          <Link src="#hosting" style={styles.link}>
+            {"hébergement"}
+          </Link>
+          {" » ;"}
+        </Text>
+        <Text style={styles.paragraph}>{"e) fournir au Client l'information et la documentation relative au site Web sans leurs codes sources ;"}</Text>
         <Text style={styles.paragraph}>{"f) rendre tout autres services prévus au contrat ou dans les spécifications."}</Text>
         <Text style={styles.paragraph}></Text>
         <Text style={styles.paragraph}>
-          {"Le Client comprend qu'il doit fournir au Concepteur le contenu graphique et infographique et que les codes sources relatives au site Web ne l'appartiennent pas."}
+          {"Le Client comprend qu'il doit fournir au Concepteur le contenu graphique et infographique et que les codes sources relatives au site Web appartiennent au Concepteur."}
         </Text>
         <Text style={styles.article}>{"2.2 Délai de fourniture de services"}</Text>
         <Text style={styles.paragraph}>
@@ -97,8 +109,12 @@ const Contrat: React.FC<ContratProps> = (props) => {
         </Text>
         <Text style={styles.article}>{"3.2 Bonus de performance"}</Text>
         <Text style={styles.paragraph}>
+          {"En considérant les spécifications - le Concepteur a droit au « "}
+          <Link src="#bonus" style={styles.link}>
+            {"bonus de performance"}
+          </Link>
           {
-            "En considérant les spécifications - le Concepteur a droit au « bonus de performance » s'il respecte toutes et chacune des conditions attachées à l'octroi dudit bonus. Dans un tel cas, ledit bonus de performance est considéré comme faisant partie intégrante du prix des services."
+            " » s'il respecte toutes et chacune des conditions attachées à l'octroi dudit bonus. Dans un tel cas, ledit bonus de performance est considéré comme faisant partie intégrante du prix des services."
           }
         </Text>
         <Text style={styles.article}>{"3.3 Dépenses encourues"}</Text>
@@ -112,14 +128,26 @@ const Contrat: React.FC<ContratProps> = (props) => {
           }
         </Text>
         <Text style={styles.article}>{"3.5 Termes et conditions de paiement"}</Text>
-        <Text style={styles.paragraph}>{"En considérant les spécifications - le prix est payable par le Client au Concepteur selon les termes et conditions de paiement « paiementClCo »."}</Text>
+        <Text style={styles.paragraph}>
+          {"En considérant les spécifications - le prix est payable par le Client au Concepteur selon les termes et conditions de paiement « "}
+          <Link src="#payment" style={styles.link}>
+            {"paiementClCo"}
+          </Link>
+          {" »."}
+        </Text>
         <Text style={styles.article}>{"Article 4 - Dispositions particulières"}</Text>
         <Text style={styles.paragraph}>
+          {"En considérant les spécifications - chacune des Parties reconnaît que la personne qu'elle désigne « "}
+          <Link src="#subClientName" style={styles.link}>
+            {"représentant(e)"}
+          </Link>
           {
-            "En considérant les spécifications - chacune des Parties reconnaît que la personne qu'elle désigne « représentant(e) » la représente et a toute autorité pour poser les actes et/ou procurations, prendre les décisions et donner les autorisations requises en vue de l'exécution du présent contrat et informer l'autre par tous les moyens."
+            " » la représente et a toute autorité pour poser les actes, procurations, prendre les décisions et donner les autorisations requises en vue de l'exécution du présent contrat et informer l'autre par tous les moyens."
           }
         </Text>
-        <Text style={styles.paragraph}>{"Le Concepteur peut laisser son empreinte via un lien url qui redirige tous les utilisateurs vers le site Web de ce dernier."}</Text>
+        <Text style={styles.paragraph}>
+          {"Le Concepteur, s'il le souhaite et sans informer le Client, peut laisser une empreinte numérique, un lien url, qui redirige tous les utilisateurs vers le site Web de ce dernier."}
+        </Text>
         <Text style={styles.article}>{"Article 5 - Limitation de responsabilité et garanties"}</Text>
         <Text style={styles.paragraph}>
           {
@@ -127,8 +155,12 @@ const Contrat: React.FC<ContratProps> = (props) => {
           }
         </Text>
         <Text style={styles.paragraph}>
+          {"En considérant les spécifications - le Client s'engage à être le seul responsable de toutes les formes d'utilisation du site Web avant ou après le « "}
+          <Link src="#startTime" style={styles.link}>
+            {"début du contrat"}
+          </Link>
           {
-            "En considérant les spécifications - le Client s'engage à être le seul responsable de toutes les formes d'utilisation du site Web avant ou après le « début du contrat » dans le cadre légal ou illégal : mise à jour, maintenance, propriété intellectuelle, litige, comparution au tribunal, bug, crash, piratage, fuite d'information, utilisation abusive ou malhonnête ...etc."
+            " » dans le cadre légal ou illégal : mise à jour, maintenance, propriété intellectuelle, litige, comparution au tribunal, bug, crash, piratage, fuite d'information, utilisation abusive ou malhonnête du site Web ...etc."
           }
         </Text>
         <Text style={styles.article}>{"Article 6 - Propriété intellectuelle"}</Text>
@@ -143,7 +175,17 @@ const Contrat: React.FC<ContratProps> = (props) => {
           {"À tout instant chacune des parties sera tenue d'informer l'autre sur toute contrefaçon relative au site Web et aux éléments du site Web dont elle aura eu connaissance."}
         </Text>
         <Text style={styles.article}>{"Article 8 - Durée du contrat"}</Text>
-        <Text style={styles.paragraph}>{"En considérant les spécifications - ce contrat est passé pour une durée de « durée du contrat » et prendra effet le « début du contrat »."}</Text>
+        <Text style={styles.paragraph}>
+          {"En considérant les spécifications - ce contrat est passé pour une durée de « "}
+          <Link src="#lifetime" style={styles.link}>
+            {"durée du contrat"}
+          </Link>
+          {" » et prendra effet le « "}
+          <Link src="#startTime" style={styles.link}>
+            {"début du contrat"}
+          </Link>
+          {" »."}
+        </Text>
         <Text style={styles.article}>{"Article 9 - Expiration du contrat"}</Text>
         <Text style={styles.paragraph}>
           {
@@ -166,36 +208,42 @@ const Contrat: React.FC<ContratProps> = (props) => {
         <Text style={styles.header} fixed>
           {props.header || ""}
         </Text>
-        <Text style={styles.title}>ANNEXE</Text>
-        <Text style={styles.author}>{author}</Text>
-        <Text style={styles.subtitle}>{"SPÉCIFICATIONS"}</Text>
-        <Text style={styles.list}>
+        <Text id="annexe" style={styles.title}>
+          ANNEXE
+        </Text>
+        <Text id="author" style={styles.author}>
+          {author}
+        </Text>
+        <Text id="spec" style={styles.subtitle}>
+          {"SPÉCIFICATIONS"}
+        </Text>
+        <Text id="subClientName" style={styles.list}>
           {"- « représentant(e) » du Client : "}
           <Text style={styles.highLight}>{props.subClientName || "non renseigné"}</Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="domainName" style={styles.list}>
           {"- nom de domaine : "}
           <Text style={styles.highLight}>{props.domainName || "non renseigné"}</Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="hosting" style={styles.list}>
           {"- hébergement : "}
           <Text style={styles.highLight}>
             <Link src={props.hosting?.link || ""}>{props.hosting?.name || "non renseigné"}</Link>
           </Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="lifetime" style={styles.list}>
           {"- durée du contrat : "}
           <Text style={styles.highLight}>{props.contract?.lifetime || "indéterminée"}</Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="startTime" style={styles.list}>
           {"- début du contrat : "}
           <Text style={styles.highLight}>{props.contract?.startTime || "non renseigné"}</Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="payment" style={styles.list}>
           {"- paiementClCo : "}
           <Text style={styles.highLight}>{props.contract?.payment || "non renseigné"}</Text>
         </Text>
-        <Text style={styles.list}>
+        <Text id="bonus" style={styles.list}>
           {"- bonus de performance : "}
           <Text style={styles.highLight}>{props.contract?.bonus || "non renseigné"}</Text>
         </Text>
@@ -234,6 +282,11 @@ const styles = StyleSheet.create({
   },
   highLight: {
     backgroundColor: "#E2F8F9",
+  },
+  link: {
+    fontSize: 14,
+    textDecoration: "none",
+    fontFamily: "Times-Italic",
   },
   text: {
     margin: 12,
