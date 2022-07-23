@@ -75,7 +75,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         from: `Do not Reply <${from}>`,
         to,
         subject: "Votre devis estimé",
-        text: "Le pdf est attaché ?",
+        text: "Veuillez touver ci-joint le devis estimé ! Mauru'uru.",
         attachments: [
           {
             filename,
