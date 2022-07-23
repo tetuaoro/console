@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import Contrat from "@components/contrat"
-import { renderToString } from "@react-pdf/renderer"
+import type SMTPTransport from "nodemailer/lib/smtp-transport"
+import { renderToStream } from "@react-pdf/renderer"
 import { createTransport } from "nodemailer"
+import Contrat from "@server/contrat"
+import logger from "@libs/logger"
 
 const contratProps = {
   header: "màj le 05 novembre 2021 - Rao Nagos - N° T.A.H.I.T.I D75938",
@@ -18,45 +20,82 @@ const contratProps = {
   },
 }
 
-const mailConfig = {
+const from = "noreply@rao-nagos.pf"
+const mailConfig: SMTPTransport.Options = {
   host: "box.rao-nagos.pf",
   port: 465,
   secure: true,
   auth: {
-    user: "noreply@rao-nagos.pf",
-    pass: process.env["NOREPLY_PASSWORD"],
+    user: from,
+    pass: process.env["NOREPLY_PASSWORD"] || "",
   },
 }
 const transporter = createTransport(mailConfig)
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const content = Contrat(contratProps)
-  let contrat = ""
-  if (content) contrat = await renderToString(content)
+const convertDocumentToBuffer = async (document: any): Promise<Buffer> => {
+  const stream = await renderToStream(document)
+  return new Promise((resolve, reject) => {
+    let buffers: Uint8Array[] = []
+    stream.on("data", (data) => {
+      buffers.push(data)
+    })
+    stream.on("end", () => {
+      resolve(Buffer.concat(buffers))
+    })
+    stream.on("error", reject)
+  })
+}
+
+const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
+  const to = "tetuaorolenoir@gmail.com"
+  let contrat: any
   res.setHeader("Content-Type", "text/plain")
+
   const getDate = () => {
     const date = new Date()
     const concat = date.toDateString() + " " + date.getHours() + " " + date.getMinutes()
     return concat.replaceAll(" ", "_")
   }
-  const filename = `"rao_web_contract_${getDate()}.pdf"`
 
-  const to = "tetuaorolenoir@gmail.com"
-  transporter.sendMail({
-    from: mailConfig.auth.user,
-    to,
-    subject: "Devis",
-    text: "Le pdf est attaché ?",
-    attachments: [
+  const callBackTransporter = (error: Error | null, info: SMTPTransport.SentMessageInfo) => {
+    if (error) {
+      logger("ERROR", "transporter logger error", error)
+      res.status(500).send("Something happened when sending message !\r\n")
+    } else {
+      logger("LOG", "transporter logger info", info)
+      res.status(200).send(`mail sent to ${to}\r\n`)
+    }
+  }
+
+  try {
+    contrat = await renderToStream(Contrat(contratProps) as any)
+    const filename = `raoWebContract_${getDate()}.pdf`
+    transporter.sendMail(
       {
-        filename,
-        content: contrat,
-        contentType: "application/pdf",
+        from: `Do not Reply <${from}>`,
+        to,
+        subject: "Votre devis estimé",
+        text: "Le pdf est attaché ?",
+        attachments: [
+          {
+            filename,
+            content: contrat,
+            contentType: "application/pdf",
+          },
+        ],
       },
-    ],
-  })
+      callBackTransporter
+    )
+  } catch (error) {
+    logger("ERROR", "logger renderToStream", error)
+    res.status(500).send("Something happened when rendering !\r\n")
+  }
+}
 
-  res.status(200).send("mail sent to " + to)
+export const config = {
+  api: {
+    externalResolver: true,
+  },
 }
 
 export default handler
