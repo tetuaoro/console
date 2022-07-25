@@ -4,7 +4,7 @@ import { renderToStream } from "@react-pdf/renderer"
 import { createTransport } from "nodemailer"
 import Contrat from "@server/contrat"
 import logger from "@libs/logger"
-import { html } from "@components/mjml"
+import MJML from "@server/mjml"
 
 const contratProps = {
   header: "màj le 05 novembre 2021 - Rao Nagos - N° T.A.H.I.T.I D75938",
@@ -53,6 +53,8 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
       res.status(200).send(`mail sent to ${to}\r\n`)
     }
   }
+
+  const { html } = MJML
 
   try {
     contrat = await renderToStream(Contrat(contratProps) as any)

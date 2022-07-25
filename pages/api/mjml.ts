@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { html } from "@components/mjml"
+import MJML from "@server/mjml"
 
 const handler = (_req: NextApiRequest, res: NextApiResponse) => {
-  res.setHeader("Content-Type", "text/plain")
-  res.status(200).send(html)
+  res.setHeader("Content-Type", "text/html; charset=UTF-8")
+  res.status(200).send(MJML.html)
 }
 
 // export const config = {
