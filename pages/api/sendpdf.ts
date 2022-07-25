@@ -4,6 +4,7 @@ import { renderToStream } from "@react-pdf/renderer"
 import { createTransport } from "nodemailer"
 import Contrat from "@server/contrat"
 import logger from "@libs/logger"
+import { html } from "@components/mjml"
 
 const contratProps = {
   header: "màj le 05 novembre 2021 - Rao Nagos - N° T.A.H.I.T.I D75938",
@@ -31,20 +32,6 @@ const mailConfig: SMTPTransport.Options = {
   },
 }
 const transporter = createTransport(mailConfig)
-
-const convertDocumentToBuffer = async (document: any): Promise<Buffer> => {
-  const stream = await renderToStream(document)
-  return new Promise((resolve, reject) => {
-    let buffers: Uint8Array[] = []
-    stream.on("data", (data) => {
-      buffers.push(data)
-    })
-    stream.on("end", () => {
-      resolve(Buffer.concat(buffers))
-    })
-    stream.on("error", reject)
-  })
-}
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
   const to = "tetuaorolenoir@gmail.com"
@@ -76,6 +63,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         to,
         subject: "Votre devis estimé",
         text: "Veuillez touver ci-joint le devis estimé ! Mauru'uru.",
+        html,
         attachments: [
           {
             filename,
