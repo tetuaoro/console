@@ -4,6 +4,7 @@ import { Document, Page, Text, Link, StyleSheet, Image } from "@react-pdf/render
 
 export interface ContratProps {
   clientName: string
+  clientEmail: string
   subClientName: string
   header?: string
   title?: string
@@ -26,7 +27,7 @@ const Contrat: React.FC<ContratProps> = (props) => {
   const dir = resolve("./public", pdfFiles)
   const filenames = readdirSync(dir)
   const images = filenames.map((name) => join(dir, name))
-  const sourceFile = images.find((img) => img.includes("source.jpg")) || ""
+  const sourceFile = images.find((img) => img.includes("logo.png")) || ""
   return (
     <Document language="fr">
       <Page style={styles.body}>

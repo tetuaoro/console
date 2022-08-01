@@ -1,4 +1,9 @@
-import { render, Mjml, MjmlHead, MjmlTitle, MjmlPreview, MjmlBody, MjmlSection, MjmlColumn, MjmlButton, MjmlImage, MjmlText, MjmlStyle, MjmlDivider, MjmlGroup } from "mjml-react"
+import { render, Mjml, MjmlHead, MjmlTitle, MjmlPreview, MjmlBody, MjmlSection, MjmlColumn, MjmlImage, MjmlText, MjmlGroup } from "mjml-react"
+
+const text = `Ia ora na,
+Vous trouverez ci-joint le contrat pour la conception d'un site web sur-mesure. Ceci est a retourné signé et daté. Si vous n'acceptez pas les termes du contrat, vous pouvez très bien
+faire parvenir vos modifications ou nous contactez directement par mail ou par téléphone.
+`
 
 const MJML = () => {
   const baseUrl = process.env.BASEURL || ""
@@ -6,7 +11,7 @@ const MJML = () => {
     <Mjml>
       <MjmlHead>
         <MjmlTitle>Contrat de conception de site web</MjmlTitle>
-        <MjmlPreview>Contrat de conception de site web</MjmlPreview>
+        <MjmlPreview>{text}</MjmlPreview>
       </MjmlHead>
       <MjmlBody backgroundColor="#ffffff" font-family="helvetica">
         <MjmlSection fullWidth backgroundColor="#011252">
@@ -23,10 +28,16 @@ const MJML = () => {
         </MjmlSection>
         <MjmlSection paddingTop="25px" paddingBottom="25px">
           <MjmlColumn>
-            <MjmlText fontSize="16px">Ia ora na,</MjmlText>
+            {/* <MjmlText fontSize="16px">Ia ora na,</MjmlText> */}
             <MjmlText fontSize="16px">
-              Vous trouverez ci-joint le contrat pour la conception d'un site web sur-mesure. Ceci est a retourné signé et daté. Si vous n'acceptez pas les termes du contrat, vous pouvez très bien
+              Ia ora na,
+              <br />
+              <br />
+              Vous trouverez ci-joint le contrat pour la conception d'un site web sur-mesure. Ceci est a retourné signé et daté. Si vous n'acceptez pas les termes du contrat, vous pouvez
               faire parvenir vos modifications ou nous contactez directement par mail ou par téléphone.
+              <br />
+              <br />
+              Cordialement,
             </MjmlText>
           </MjmlColumn>
         </MjmlSection>
@@ -69,4 +80,10 @@ const MJML = () => {
   )
 }
 
-export default render(<MJML />, { validationLevel: "soft" })
+const { html, errors } = render(<MJML />, { validationLevel: "soft" })
+
+export default {
+  html,
+  errors,
+  text,
+}

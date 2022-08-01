@@ -2,6 +2,7 @@ import { Document, Page, Text, Link, StyleSheet } from "@react-pdf/renderer"
 
 export interface ContratProps {
   clientName: string
+  clientEmail: string
   subClientName: string
   header?: string
   title?: string

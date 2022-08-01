@@ -46,15 +46,15 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
 
   const callBackTransporter = (error: Error | null, info: SMTPTransport.SentMessageInfo) => {
     if (error) {
-      logger("ERROR", "transporter logger error", error)
+      logger("err", "transporter logger error", error)
       res.status(500).send("Something happened when sending message !\r\n")
     } else {
-      logger("LOG", "transporter logger info", info)
+      logger("log", "transporter logger info", info)
       res.status(200).send(`mail sent to ${to}\r\n`)
     }
   }
 
-  const { html } = MJML
+  const { html, text } = MJML
 
   try {
     contrat = await renderToStream(Contrat(contratProps) as any)
@@ -64,7 +64,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         from: `Do not Reply <${from}>`,
         to,
         subject: "Votre devis estimé",
-        text: "Veuillez touver ci-joint le devis estimé ! Mauru'uru.",
+        text,
         html,
         attachments: [
           {
@@ -77,7 +77,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
       callBackTransporter
     )
   } catch (error) {
-    logger("ERROR", "logger renderToStream", error)
+    logger("err", "logger renderToStream", error)
     res.status(500).send("Something happened when rendering !\r\n")
   }
 }
