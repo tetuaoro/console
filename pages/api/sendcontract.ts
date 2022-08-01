@@ -44,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           from: `Do not Reply <${from}>`,
           to,
-          subject: "Votre devis estimé",
+          subject: "Contrat de conception d'un site web",
           text,
           html,
           attachments: [
